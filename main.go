@@ -17,7 +17,7 @@ func main() {
 	// defer close() ensures the resource is closed when main() finishes
 	defer db.Close()
 	// Update rows in the db
-	status := true
+	status := false
 	id := 2
 	result, err := db.Exec("UPDATE tasks SET status = ? WHERE id = ?", status, id)
 
