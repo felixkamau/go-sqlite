@@ -16,6 +16,7 @@ func main() {
 
 	// defer close() ensures the resource is closed when main() finishes
 	defer db.Close()
+	rows, err := db.Query("SELECT id, task, status FROM tasks")
 	// sql-statement to create a table
 	// sqlStmt := `
 	// 	CREATE TABLE IF NOT EXISTS tasks (
@@ -28,14 +29,31 @@ func main() {
 	// _, err = db.Exec(sqlStmt)
 
 	// Insert a new task
-	task := "Learn go"
-	status := true // or false if not done
-	_, err = db.Exec("INSERT INTO tasks(task, status) VALUES(?, ?)", task, status)
+	// task := "Learn go"
+	// status := true // or false if not done
+	// _, err = db.Exec("INSERT INTO tasks(task, status) VALUES(?, ?)", task, status)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var task string
+		var status bool
+		err = rows.Scan(&id, &task, &status)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("Task: %d, %s, %v", id, task, status)
+
+	}
+
+	if err = rows.Err(); err != nil {
+		log.Fatal(err)
+	}
 	// `sqlite3 tasks.db .schema` to check schema
-	log.Println("New 'task' added successfully")
+	// log.Println("New 'task' added successfully")
 
 	// with db created we can perform CRUD ops
 }
