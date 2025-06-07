@@ -17,9 +17,9 @@ func main() {
 	// defer close() ensures the resource is closed when main() finishes
 	defer db.Close()
 	// Update rows in the db
-	task := "Setup Docker"
+	status := true
 	id := 2
-	result, err := db.Exec("UPDATE tasks SET status = ? WHERE id = ?", task, id)
+	result, err := db.Exec("UPDATE tasks SET status = ? WHERE id = ?", status, id)
 
 	if err != nil {
 		log.Fatal(err)
