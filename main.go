@@ -17,18 +17,25 @@ func main() {
 	// defer close() ensures the resource is closed when main() finishes
 	defer db.Close()
 	// sql-statement to create a table
-	sqlStmt := `
-		CREATE TABLE IF NOT EXISTS tasks (
-			id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			task TEXT,
-			status BOOL
-		);
-	`
-	// Execute the sql-script
-	_, err = db.Exec(sqlStmt)
+	// sqlStmt := `
+	// 	CREATE TABLE IF NOT EXISTS tasks (
+	// 		id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	// 		task TEXT,
+	// 		status BOOL
+	// 	);
+	// `
+	// // Execute the sql-script
+	// _, err = db.Exec(sqlStmt)
+
+	// Insert a new task
+	task := "Learn go"
+	status := true // or false if not done
+	_, err = db.Exec("INSERT INTO tasks(task, status) VALUES(?, ?)", task, status)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// `sqlite3 tasks.db .schema` to check schema
-	log.Println("Table 'tasks' created successfully")
+	log.Println("New 'task' added successfully")
+
+	// with db created we can perform CRUD ops
 }
